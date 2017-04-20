@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Custom Polygon Styles</title>
+    <link rel="stylesheet" href="https://openlayers.org/en/v4.0.1/css/ol.css" type="text/css">
+    <!-- The line below is only needed for old environments like Internet Explorer and Android 4.x -->
+    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"></script>
+    <script src="https://openlayers.org/en/v4.0.1/build/ol.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+  </head>
+  <body>
+    <div id="olMap"></div>
+    <script>
+      //Holds the Polygon feature  
+var polyFeature = new ol.Feature({
+    geometry: new ol.geom.Polygon([
+        [
+            [10.689697265625, -25.0927734375],
+            [34.595947265625, -20.1708984375],
+            [38.814697265625, -35.6396484375],
+            [13.502197265625, -39.1552734375],
+            [10.689697265625, -25.0927734375]
+        ]
+    ])
+});
+polyFeature.getGeometry().transform('EPSG:4326', 'EPSG:3857');
+
+//Holds the Point feature
+var pointFeature = new ol.Feature({
+    geometry: new ol.geom.Point(
+    [28.048095703125, -26.015625])
+});
+pointFeature.getGeometry().transform('EPSG:4326', 'EPSG:3857');
+
+//A vector layer to hold the features
+var vectorLayer = new ol.layer.Vector({
+    source: new ol.source.Vector({
+        features: [
+        polyFeature,
+        pointFeature]
+    })
+});
+
+//A Image layer to hold the features
+var imageLayer = new ol.layer.Image({
+    source: new ol.source.ImageVector({
+        source: new ol.source.Vector({
+            features: [
+            polyFeature,
+            pointFeature]
+        })
+    })
+});
+
+var map = new ol.Map({
+    target: $('#olMap')[0],
+    layers: [
+    new ol.layer.Tile({
+        source: new ol.source.TileJSON({
+            url: 'http://api.tiles.mapbox.com/v3/mapbox.geography-class.jsonp'
+        })
+    }),
+    vectorLayer //When the vector layer is used both the features displays correctly.
+    //imageLayer //When the image layer is in use only the point feature is displayed.
+    ],
+    view: new ol.View({
+        center: [2952104.019976033, -3277504.823700756],
+        zoom: 4
+    })
+});
+    </script>
+  </body>
+</html>
