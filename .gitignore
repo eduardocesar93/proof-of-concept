@@ -10,6 +10,7 @@ bin/
 # Data and plot files
 *.rar
 *.xlsx
+numpy_files/
 data/
 
 # Notebook checkpoints
