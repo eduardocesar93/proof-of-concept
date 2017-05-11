@@ -10,6 +10,8 @@ bin/
 # Data and plot files
 *.rar
 *.xlsx
+notebooks/cifar-10-batches-py/
+notebooks/mnist/
 numpy_files/
 data/
 
